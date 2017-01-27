@@ -1,2 +1,4 @@
-# -jaxrs-angular
-JAX-RSと AngularJSの試作
+# -jaxrs-angular(名前しくじった)
+JAX-RSと AngularJSを頑張ろう
+
+
