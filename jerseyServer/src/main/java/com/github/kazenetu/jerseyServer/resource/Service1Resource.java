@@ -28,7 +28,7 @@ public class Service1Resource {
 	private ServletContext context;
 
     @GET
-    @Path("SendData")
+    @Path("TestData")
     @Produces(MediaType.APPLICATION_JSON)
     public String SendData(){
         List<TestData> list =new ArrayList<>();
@@ -49,7 +49,7 @@ public class Service1Resource {
     }
 
     @POST
-    @Path("GetDataCount")
+    @Path("Count")
     //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String GetDataCount(String json){
