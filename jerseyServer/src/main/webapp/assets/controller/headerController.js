@@ -5,6 +5,5 @@ myApp.controller('headerController', ['$scope', 'userService',
         $scope.userName = function() {
             return userService.getName();
         };
-        $scope.test = "AAA";
     }
 ]);
