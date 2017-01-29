@@ -12,23 +12,7 @@
 </head>
 
 <body ng-app="App">
-	<!--
 	<div ng-view></div>
-	-->
-
-	<div ng-include="'view/header.html'"></div>
-
-<!-- 検索 -->
-<div class="container" ng-controller="searchSample">
-	<div class="row">
-		<div class="pull-right">
-			<button class="btn" ng-click="search()">検索</button>
-		</div>
-	</div>
-	<ul>
-		<li ng-repeat="result in searchResult">{{result.name}}</li>
-	</ul>
-</div>
 
 	<script src="assets/lib/jquery.min.js"></script>
 	<script src="assets/lib/angular/angular.min.js"></script>
@@ -40,7 +24,9 @@
 	<script src="assets/service/userService.js"></script>
 	<script src="assets/service/webApiService.js"></script>
 
+	<script src="assets/controller/loginController.js"></script>
 	<script src="assets/controller/headerController.js"></script>
+
 	<script src="assets/controller/searchSample.js"></script>
 
 

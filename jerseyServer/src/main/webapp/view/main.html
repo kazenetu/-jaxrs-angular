@@ -1,0 +1,13 @@
+<div ng-include="'view/header.html'"></div>
+
+<!-- 検索 -->
+<div class="container" ng-controller="searchSample">
+	<div class="row">
+		<div class="pull-right">
+			<button class="btn" ng-click="search()">検索</button>
+		</div>
+	</div>
+	<ul>
+		<li ng-repeat="result in searchResult">{{result.name}}</li>
+	</ul>
+</div>

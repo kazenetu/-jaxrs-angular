@@ -11,11 +11,19 @@ myApp.service('webApiService', function($resource) {
   }
 
   /**
+   * GET(配列取得)メソッド
+   */
+  this.query = function(action,params){
+    var result = $resource(this.baseUri + action);
+    return result.query(params);
+  };
+
+  /**
    * GETメソッド
    */
   this.get = function(action,params){
     var result = $resource(this.baseUri + action);
-    return result.query(params);
+    return result.get(params);
   };
 
   /**
