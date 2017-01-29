@@ -92,18 +92,18 @@ public class Service1Resource {
 
     @GET
     @Path("Login")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     public String Login(@QueryParam("id") String id){
 
-		String filePath=this.context.getRealPath("/WEB-INF/classes/Test.db");
+		String filePath=this.context.getRealPath("/WEB-INF/classes/test.db");
 
 
 		SqliteTest test = new SqliteTest(filePath);
 
     	if(test.Login(id)){
-    		return "OK";
+    		return "{\"result\":\"OK\"}";
     	}
 
-    	return "NG";
+		return "{\"result\":\"NG\"}";
     }
 }
