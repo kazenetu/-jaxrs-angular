@@ -8,7 +8,6 @@ myApp.controller('loginController', ['$scope','$location', 'webApiService','user
       $scope.errorMsg = "";
 
       $scope.login = function() {
-        console.log($scope.id);
           var result =  webApiService.get('app/Service1/Login?id=:id',{id:$scope.id});
            result.$promise.then(function(response){
               if(result.result !== "OK"){
