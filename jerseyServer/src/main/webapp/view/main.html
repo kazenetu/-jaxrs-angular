@@ -4,7 +4,11 @@
 <div class="container" ng-controller="searchSample">
 	<div class="row">
 		<div class="pull-right">
-			<button class="btn" ng-click="search()">検索</button>
+			<form action="app/dl/download" method="POST">
+				<input type="hidden" name="userName" value={{userName}}>
+				<input type="submit" class="btn" value="CSV出力">
+				<button class="btn" ng-click="search()">検索</button>
+			</form>
 		</div>
 	</div>
 	<ul>
