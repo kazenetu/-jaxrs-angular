@@ -25,7 +25,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.QuoteMode;
 
 @Provider
-@Produces("text/csv")
+@Produces(MediaType.TEXT_PLAIN)
 public class CsvWriter<E> implements MessageBodyWriter<List<E>> {
 
     @Override

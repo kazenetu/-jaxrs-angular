@@ -9,6 +9,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.github.kazenetu.jerseyServer.entity.TestData;
@@ -18,7 +19,7 @@ import com.github.kazenetu.jerseyServer.entity.TestData;
 public class DownloadResource {
     @POST
     @Path("download")
-    @Produces("text/csv")
+    @Produces(MediaType.TEXT_PLAIN)
     public Response SendData(@FormParam("userName") String userName){
         List<TestData> list =new ArrayList<>();
         for(int i=0;i<10;i++){
