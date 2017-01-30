@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class SqliteTest {
 
@@ -47,7 +49,34 @@ public class SqliteTest {
 			e.printStackTrace();
 		}
 
+		//プロパティ取得テスト
+		getPropertiesTest();
+
 		return false;
+	}
+
+	/**
+	 * プロパティファイル取得テスト
+	 */
+	private void getPropertiesTest()
+	{
+		ResourceBundle bundle = null;
+        try {
+            bundle = ResourceBundle.getBundle("connection_main");
+        } catch (MissingResourceException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            System.out.println(bundle.getString("url"));
+            System.out.println(bundle.getString("driver"));
+            System.out.println(bundle.getString("user"));
+            System.out.println(bundle.getString("password"));
+        } catch (MissingResourceException e) {
+            e.printStackTrace();
+            return;
+        }
 	}
 
 }
