@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-public class SqliteTest {
+public class SqliteTest implements AutoCloseable  {
 
 	private Connection con = null;
 
@@ -31,6 +31,19 @@ public class SqliteTest {
 		}
 	}
 
+	@Override
+	public void close() {
+		if(con != null){
+			try {
+				con.close();
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+
+	}
+
 	public boolean Login(String id){
 		String sql = "select count(USER_ID) as cnt from MT_USER where USER_ID=?;";
 
@@ -51,6 +64,33 @@ public class SqliteTest {
 
 		//プロパティ取得テスト
 		getPropertiesTest();
+
+		return false;
+	}
+
+	public boolean updateTest(String id){
+		String sql = "update MT_USER set PASSWORD=PASSWORD+1 where USER_ID=?;";
+
+		PreparedStatement statement;
+		try {
+			con.setAutoCommit(false);
+			con.setSavepoint();
+
+			statement = con.prepareStatement(sql);
+			statement.setString(1, id);
+
+			int result = statement.executeUpdate();
+			if(result > 0){
+				con.commit();
+				return true;
+			}else{
+				con.rollback();
+				return false;
+			}
+		} catch (SQLException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 
 		return false;
 	}
@@ -78,5 +118,4 @@ public class SqliteTest {
             return;
         }
 	}
-
 }

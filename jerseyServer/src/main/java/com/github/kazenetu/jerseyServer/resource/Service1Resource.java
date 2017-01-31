@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kazenetu.jerseyServer.db.SqliteTest;
 import com.github.kazenetu.jerseyServer.entity.TestData;
 import com.github.kazenetu.jerseyServer.entity.TestDataCount;
+import com.github.kazenetu.jerseyServer.entity.UserData;
 
 //以下でアクセス http://localhost:8080/jerseyServer/app/Service1
 @Path("Service1")
@@ -104,6 +106,24 @@ public class Service1Resource {
     		return "{\"result\":\"OK\"}";
     	}
 
+		return "{\"result\":\"NG\"}";
+    }
+
+
+    @POST
+    @Path("updateTest")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String updateTest(UserData userData){
+
+		String filePath=this.context.getRealPath("/WEB-INF/classes/test.db");
+
+
+		try(SqliteTest test = new SqliteTest(filePath);){
+	    	if(test.updateTest(userData.getId())){
+	    		return "{\"result\":\"OK\"}";
+	    	}
+		}
 		return "{\"result\":\"NG\"}";
     }
 }

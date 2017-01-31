@@ -19,7 +19,20 @@ myApp.controller('loginController', ['$scope','$location', 'webApiService','user
                 $location.path('/main');
               }
            });
-
       };
+
+      $scope.updateTest = function(){
+          var result =  webApiService.post('app/Service1/updateTest',{id:$scope.id});
+           result.$promise.then(function(response){
+              if(result.result !== "OK"){
+                $scope.errorMsg = "更新失敗！";
+                $scope.isError = true;
+              }else{
+                $scope.errorMsg = "更新成功";
+                $scope.isError = true;
+              }
+           });
+
+      }
     }
 ]);
