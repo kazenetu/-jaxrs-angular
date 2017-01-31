@@ -31,7 +31,7 @@ myApp.service('webApiService', function($resource) {
    */
   this.post = function(action,params){
     var result = $resource(this.baseUri + action);
-    return result.post(params);
+    return result.save(params);
   };
 
 });
