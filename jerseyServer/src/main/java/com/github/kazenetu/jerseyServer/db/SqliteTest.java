@@ -12,10 +12,13 @@ public class SqliteTest implements AutoCloseable  {
 
 	private Connection con = null;
 
-	public SqliteTest(String filePath) {
+	public SqliteTest() {
 		try {
 			// JDBCドライバーの指定
 			Class.forName("org.sqlite.JDBC");
+
+			//クラスローダーからdbファイルの物理パスを取得する
+			String filePath = SqliteTest.class.getClassLoader().getResource("test.db").getPath();
 
 			// データベースに接続する なければ作成される
 			con = DriverManager.getConnection("jdbc:sqlite:"+filePath);

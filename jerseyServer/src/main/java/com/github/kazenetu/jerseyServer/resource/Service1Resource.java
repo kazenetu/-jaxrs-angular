@@ -31,14 +31,12 @@ import com.github.kazenetu.jerseyServer.service.UserService;
 @RequestScoped
 @Path("Service1")
 public class Service1Resource {
-	private String filePath = null;
 
 	@Inject
 	UserService userService;
 
     @Context
     public void setServletContext(ServletContext context) {
-        this.filePath = context.getRealPath("/WEB-INF/classes/test.db");
     }
 
     @GET
@@ -105,7 +103,7 @@ public class Service1Resource {
     public String Login(@QueryParam("id") String id){
 
     	//TODO パスワードを取得
-    	if(userService.login(id,"",this.filePath)){
+    	if(userService.login(id,"")){
     		return "{\"result\":\"OK\"}";
     	}
 
@@ -119,7 +117,7 @@ public class Service1Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public String updateTest(UserData userData){
 
-		try(SqliteTest test = new SqliteTest(this.filePath);){
+		try(SqliteTest test = new SqliteTest();){
 	    	if(test.updateTest(userData.getId())){
 	    		return "{\"result\":\"OK\"}";
 	    	}

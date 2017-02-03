@@ -11,12 +11,11 @@ public class UserService {
 	 * ログインチェック
 	 * @param userID ユーザーID
 	 * @param password パスワード
-	 * @param filePath SQLiteのファイルパス
 	 * @return ログイン成否
 	 */
-	public boolean login(String userID,String password,String filePath){
+	public boolean login(String userID,String password){
 
-		try(SqliteTest test = new SqliteTest(filePath);){
+		try(SqliteTest test = new SqliteTest();){
     		return test.updateTest(userID);
 		}
 
