@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -23,11 +25,21 @@ import com.github.kazenetu.jerseyServer.db.SqliteTest;
 import com.github.kazenetu.jerseyServer.entity.TestData;
 import com.github.kazenetu.jerseyServer.entity.TestDataCount;
 import com.github.kazenetu.jerseyServer.entity.UserData;
+import com.github.kazenetu.jerseyServer.service.UserService;
 
 //以下でアクセス http://localhost:8080/jerseyServer/app/Service1
+@RequestScoped
 @Path("Service1")
 public class Service1Resource {
-	private ServletContext context;
+	private String filePath = null;
+
+	@Inject
+	UserService userService;
+
+    @Context
+    public void setServletContext(ServletContext context) {
+        this.filePath = context.getRealPath("/WEB-INF/classes/test.db");
+    }
 
     @GET
     @Path("TestData")
@@ -87,22 +99,13 @@ public class Service1Resource {
         return json;
     }
 
-    @Context
-    public void setServletContext(ServletContext context) {
-        this.context = context;
-    }
-
     @GET
     @Path("Login")
     @Produces(MediaType.APPLICATION_JSON)
     public String Login(@QueryParam("id") String id){
 
-		String filePath=this.context.getRealPath("/WEB-INF/classes/test.db");
-
-
-		SqliteTest test = new SqliteTest(filePath);
-
-    	if(test.Login(id)){
+    	//TODO パスワードを取得
+    	if(userService.login(id,"",this.filePath)){
     		return "{\"result\":\"OK\"}";
     	}
 
@@ -116,10 +119,7 @@ public class Service1Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public String updateTest(UserData userData){
 
-		String filePath=this.context.getRealPath("/WEB-INF/classes/test.db");
-
-
-		try(SqliteTest test = new SqliteTest(filePath);){
+		try(SqliteTest test = new SqliteTest(this.filePath);){
 	    	if(test.updateTest(userData.getId())){
 	    		return "{\"result\":\"OK\"}";
 	    	}
