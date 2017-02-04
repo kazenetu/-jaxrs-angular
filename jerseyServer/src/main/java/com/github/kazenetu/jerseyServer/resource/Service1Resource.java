@@ -32,8 +32,8 @@ import com.github.kazenetu.jerseyServer.service.UserService;
 @Path("Service1")
 public class Service1Resource {
 
-	@Inject
-	UserService userService;
+    @Inject
+    UserService userService;
 
     @Context
     public void setServletContext(ServletContext context) {
@@ -42,20 +42,20 @@ public class Service1Resource {
     @GET
     @Path("TestData")
     @Produces(MediaType.APPLICATION_JSON)
-    public String SendData(){
-        List<TestData> list =new ArrayList<>();
-        for(int i=0;i<10;i++){
-        	list.add(new TestData("Name" + i, 20 + i));
+    public String SendData() {
+        List<TestData> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(new TestData("Name" + i, 20 + i));
         }
 
-        String json ="";
+        String json = "";
         ObjectMapper mapper = new ObjectMapper();
         try {
-			json = mapper.writeValueAsString(list);
-		} catch (JsonProcessingException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+            json = mapper.writeValueAsString(list);
+        } catch (JsonProcessingException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
 
         return json;
     }
@@ -64,35 +64,35 @@ public class Service1Resource {
     @Path("Count")
     //@Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String GetDataCount(String json){
+    public String GetDataCount(String json) {
 
-        TestDataCount result =new TestDataCount();
-        result.count=0;
+        TestDataCount result = new TestDataCount();
+        result.count = 0;
 
-    	ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
 
-    	List<TestData> list;
-		try {
-			list = mapper.readValue(json, new TypeReference<List<TestData>>() {});
-	        result.count=list.size();
-		} catch (JsonParseException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
-
+        List<TestData> list;
+        try {
+            list = mapper.readValue(json, new TypeReference<List<TestData>>() {
+            });
+            result.count = list.size();
+        } catch (JsonParseException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
 
         try {
-			json = mapper.writeValueAsString(result);
-		} catch (JsonProcessingException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+            json = mapper.writeValueAsString(result);
+        } catch (JsonProcessingException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
 
         return json;
     }
@@ -100,28 +100,27 @@ public class Service1Resource {
     @GET
     @Path("Login")
     @Produces(MediaType.APPLICATION_JSON)
-    public String Login(@QueryParam("id") String id){
+    public String Login(@QueryParam("id") String id) {
 
-    	//TODO パスワードを取得
-    	if(userService.login(id,"")){
-    		return "{\"result\":\"OK\"}";
-    	}
+        //TODO パスワードを取得
+        if (userService.login(id, "")) {
+            return "{\"result\":\"OK\"}";
+        }
 
-		return "{\"result\":\"NG\"}";
+        return "{\"result\":\"NG\"}";
     }
-
 
     @POST
     @Path("updateTest")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String updateTest(UserData userData){
+    public String updateTest(UserData userData) {
 
-		try(SqliteTest test = new SqliteTest();){
-	    	if(test.updateTest(userData.getId())){
-	    		return "{\"result\":\"OK\"}";
-	    	}
-		}
-		return "{\"result\":\"NG\"}";
+        try (SqliteTest test = new SqliteTest();) {
+            if (test.updateTest(userData.getId())) {
+                return "{\"result\":\"OK\"}";
+            }
+        }
+        return "{\"result\":\"NG\"}";
     }
 }

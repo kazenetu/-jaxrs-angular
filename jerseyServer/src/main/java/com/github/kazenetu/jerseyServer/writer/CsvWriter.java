@@ -34,13 +34,16 @@ public class CsvWriter<E> implements MessageBodyWriter<List<E>> {
     }
 
     @Override
-    public long getSize(List<E> entities, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
+    public long getSize(List<E> entities, Class<?> type, Type genericType, Annotation[] annotations,
+            MediaType mediaType) {
         // サイズは気にしない
         return -1;
     }
 
     @Override
-    public void writeTo(List<E> entities, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
+    public void writeTo(List<E> entities, Class<?> type, Type genericType, Annotation[] annotations,
+            MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
+            throws IOException, WebApplicationException {
         if (entities.isEmpty()) {
             return;
         }
@@ -48,28 +51,28 @@ public class CsvWriter<E> implements MessageBodyWriter<List<E>> {
         try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(entityStream, Charset.forName("Windows-31J")));
                 CSVPrinter printer = new CSVPrinter(writer, CSVFormat.RFC4180.withQuoteMode(QuoteMode.NON_NUMERIC));) {
 
-        	Class<?> entityClass = entities.get(0).getClass();
+            Class<?> entityClass = entities.get(0).getClass();
             List<Method> accessors = Stream.of(entityClass.getMethods())
-            		.filter(m->m.getReturnType() != void.class && m.getDeclaringClass() == entityClass )
-            		.collect(Collectors.toList());
+                    .filter(m -> m.getReturnType() != void.class && m.getDeclaringClass() == entityClass)
+                    .collect(Collectors.toList());
 
-            for(E entity : entities) {
-            	for(Method accessor:accessors){
-            		printer.print(accessor.invoke(entity));
-            	}
+            for (E entity : entities) {
+                for (Method accessor : accessors) {
+                    printer.print(accessor.invoke(entity));
+                }
                 printer.println();
             }
 
         } catch (IllegalAccessException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO 自動生成された catch ブロック
-			e.printStackTrace();
-		}
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
     }
 
 }

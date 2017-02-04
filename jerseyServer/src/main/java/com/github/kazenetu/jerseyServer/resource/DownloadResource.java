@@ -20,19 +20,21 @@ public class DownloadResource {
     @POST
     @Path("download")
     @Produces(MediaType.TEXT_PLAIN)
-    public Response SendData(@FormParam("userName") String userName){
-        List<TestData> list =new ArrayList<>();
-        for(int i=0;i<10;i++){
-        	list.add(new TestData("Name" + i, 20 + i));
+    public Response SendData(@FormParam("userName") String userName) {
+        List<TestData> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            list.add(new TestData("Name" + i, 20 + i));
         }
 
         String fileName = "テスト_" + userName + ".csv";
         try {
-			return Response.ok(list).header("Content-Disposition", "attachment; filename=" +  URLEncoder.encode(fileName , "utf-8")).build();
-		} catch (UnsupportedEncodingException e) {
-			// TODO 自動生成された catch ブロック
-			return Response.serverError().build();
-		}
+            return Response.ok(list)
+                    .header("Content-Disposition", "attachment; filename=" + URLEncoder.encode(fileName, "utf-8"))
+                    .build();
+        } catch (UnsupportedEncodingException e) {
+            // TODO 自動生成された catch ブロック
+            return Response.serverError().build();
+        }
     }
 
 }
