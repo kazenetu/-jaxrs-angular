@@ -19,5 +19,6 @@ public class ServerApplication extends ResourceConfig {
                 bindAsContract(UserService.class);
             }
         });
+
     }
 }

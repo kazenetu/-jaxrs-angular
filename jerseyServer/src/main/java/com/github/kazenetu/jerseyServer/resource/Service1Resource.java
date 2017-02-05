@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -21,7 +22,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.kazenetu.jerseyServer.db.SqliteTest;
 import com.github.kazenetu.jerseyServer.entity.TestData;
 import com.github.kazenetu.jerseyServer.entity.TestDataCount;
 import com.github.kazenetu.jerseyServer.entity.UserData;
@@ -37,6 +37,11 @@ public class Service1Resource {
 
     @Context
     public void setServletContext(ServletContext context) {
+    }
+
+    @PreDestroy
+    public void PreDestroy(){
+        System.out.println(">req PreDestroy");
     }
 
     @GET
@@ -114,13 +119,13 @@ public class Service1Resource {
     @Path("updateTest")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String updateTest(UserData userData) {
+    public String passwordChange(UserData userData) {
 
-        try (SqliteTest test = new SqliteTest();) {
-            if (test.updateTest(userData.getId())) {
-                return "{\"result\":\"OK\"}";
-            }
+        //TODO パスワードを取得
+        if (userService.passwordChange(userData.getId(),userData.getPassword(),"")) {
+            return "{\"result\":\"OK\"}";
         }
+
         return "{\"result\":\"NG\"}";
     }
 }
