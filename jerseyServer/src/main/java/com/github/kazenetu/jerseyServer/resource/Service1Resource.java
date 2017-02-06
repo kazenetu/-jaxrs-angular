@@ -8,14 +8,17 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,6 +37,9 @@ public class Service1Resource {
 
     @Inject
     UserService userService;
+
+    @Inject
+    HttpSession session;
 
     @Context
     public void setServletContext(ServletContext context) {
@@ -109,6 +115,7 @@ public class Service1Resource {
 
         //TODO パスワードを取得
         if (userService.login(id, "")) {
+            session.setAttribute("userName", id);
             return "{\"result\":\"OK\"}";
         }
 
@@ -120,6 +127,9 @@ public class Service1Resource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String passwordChange(UserData userData) {
+        if(session.getAttribute("userName") == null){
+            throw new WebApplicationException(Status.UNAUTHORIZED);
+        }
 
         //TODO パスワードを取得
         if (userService.passwordChange(userData.getId(),userData.getPassword(),"")) {

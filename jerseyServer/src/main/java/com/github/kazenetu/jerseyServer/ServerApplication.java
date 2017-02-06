@@ -1,10 +1,12 @@
 package com.github.kazenetu.jerseyServer;
 
+import javax.servlet.http.HttpSession;
 import javax.ws.rs.ApplicationPath;
 
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.github.kazenetu.jerseyServer.factory.SessionFactory;
 import com.github.kazenetu.jerseyServer.service.UserService;
 
 @ApplicationPath("app")
@@ -17,6 +19,7 @@ public class ServerApplication extends ResourceConfig {
             @Override
             protected void configure() {
                 bindAsContract(UserService.class);
+                bindFactory(SessionFactory.class).to(HttpSession.class);
             }
         });
 
