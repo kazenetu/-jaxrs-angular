@@ -22,6 +22,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kazenetu.jerseyServer.Test.TestInterface;
 import com.github.kazenetu.jerseyServer.entity.TestData;
 import com.github.kazenetu.jerseyServer.entity.TestDataCount;
 import com.github.kazenetu.jerseyServer.entity.UserData;
@@ -128,4 +129,16 @@ public class Service1Resource {
 
         return "{\"result\":\"NG\"}";
     }
+
+
+    @Inject @RequestScoped
+    private TestInterface test;
+
+    @GET
+    @Path("Test")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String injectTest(){
+        return test.msg();
+    }
+
 }
