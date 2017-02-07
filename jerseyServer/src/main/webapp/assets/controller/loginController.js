@@ -31,8 +31,11 @@ myApp.controller('loginController', ['$scope','$location', 'webApiService','user
                 $scope.errorMsg = "更新成功";
                 $scope.isError = true;
               }
+           },function(response){
+             if(response.status == 401)
+                $scope.errorMsg = "認証失敗！";
+                $scope.isError = true;
            });
-
       }
     }
 ]);
