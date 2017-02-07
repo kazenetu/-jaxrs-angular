@@ -31,6 +31,13 @@ public class UserService {
         }
     }
 
+    /**
+     * パスワード変更
+     * @param userID ユーザーID
+     * @param password パスワード
+     * @param newPassword 新パスワード
+     * @return 変更成否
+     */
     public boolean passwordChange(String userID, String password, String newPassword) {
         try(UserRepository userRepository=new UserRepository()){
             return userRepository.passwordChange(userID, password, newPassword);
