@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 
+import com.github.kazenetu.jerseyServer.entity.UserData;
 import com.github.kazenetu.jerseyServer.model.UserRepository;
 
 @ApplicationScoped
@@ -25,7 +26,7 @@ public class UserService {
      * @param password パスワード
      * @return ログイン成否
      */
-    public boolean login(String userID, String password) {
+    public UserData login(String userID, String password) {
         try(UserRepository userRepository=new UserRepository()){
             return userRepository.login(userID, password);
         }

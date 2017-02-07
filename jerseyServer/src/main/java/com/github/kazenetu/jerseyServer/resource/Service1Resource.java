@@ -114,9 +114,11 @@ public class Service1Resource {
     public String Login(@QueryParam("id") String id) {
 
         //TODO パスワードを取得
-        if (userService.login(id, "")) {
-            session.setAttribute("userName", id);
-            return "{\"result\":\"OK\"}";
+        UserData userData = userService.login(id, "");
+        if (userData != null) {
+            session.setAttribute("userId", id);
+            String result = String.format("{\"result\":\"OK\",\"name\":\"%s\"}", userData.getName());
+            return result;
         }
 
         return "{\"result\":\"NG\"}";
@@ -127,7 +129,7 @@ public class Service1Resource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String passwordChange(UserData userData) {
-        if(session.getAttribute("userName") == null){
+        if(session.getAttribute("userId") == null || (String)session.getAttribute("userId") != userData.getId()){
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
 

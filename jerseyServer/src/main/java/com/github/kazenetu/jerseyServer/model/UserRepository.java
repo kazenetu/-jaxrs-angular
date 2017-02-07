@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
 import com.github.kazenetu.jerseyServer.db.SqliteTest;
+import com.github.kazenetu.jerseyServer.entity.UserData;
 
 @Named
 @RequestScoped
@@ -30,27 +31,34 @@ public class UserRepository implements AutoCloseable {
      * ログインチェック
      * @param userID ユーザーID
      * @param password パスワード
-     * @return ログイン成否
+     * @return ユーザー情報(検索できない場合はnull)
      */
-    public boolean login(String userID, String password) {
-        String sql = "select count(USER_ID) as cnt from MT_USER where USER_ID=?;";
+    public UserData login(String userID, String password) {
+        String sql = "select NAME,AGE from MT_USER where USER_ID=?;";
 
         ArrayList<Object> params = new ArrayList<>();
         params.add(userID);
 
+        UserData userData = null;
         try {
             List<Map<String,Object>> result = db.query(sql, params);
             if (result.isEmpty()) {
-                return false;
+                return userData;
             }
-            if((int)result.get(0).get("cnt") > 0){
-                return true;
-            }
+
+            Map<String,Object> row = result.get(0);
+
+            userData = new UserData();
+            userData.setName(userID);
+            userData.setName((String)row.get("NAME"));
+            userData.setAge((int)row.get("AGE"));
+
+            return userData;
         } catch (Exception e) {
             // TODO 自動生成された catch ブロック
             e.printStackTrace();
         }
-        return false;
+        return userData;
     }
 
     /**

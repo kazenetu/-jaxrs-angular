@@ -3,6 +3,9 @@ package com.github.kazenetu.jerseyServer.entity;
 public class UserData {
     private String id;
     private String name;
+    private String password;
+    private int age;
+
     public String getId() {
         return id;
     }
@@ -21,5 +24,10 @@ public class UserData {
     public void setPassword(String password) {
         this.password = password;
     }
-    private String password;
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
 }

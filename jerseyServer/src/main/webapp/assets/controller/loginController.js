@@ -15,7 +15,7 @@ myApp.controller('loginController', ['$scope','$location', 'webApiService','user
                 $scope.isError = true;
               }else{
                 $scope.isError = false;
-                userService.setName($scope.id);
+                userService.setName(result.name);
                 $location.path('/main');
               }
            });
