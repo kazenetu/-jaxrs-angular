@@ -1,7 +1,6 @@
 package com.github.kazenetu.jerseyServer.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -13,6 +12,8 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.sqlite.SQLiteDataSource;
+
 public class SqliteTest implements AutoCloseable {
 
     private Connection con = null;
@@ -22,18 +23,14 @@ public class SqliteTest implements AutoCloseable {
         System.out.println("SqliteTest new:"+hashCode());
 
         try {
-            // JDBCドライバーの指定
-            Class.forName("org.sqlite.JDBC");
-
             //クラスローダーからdbファイルの物理パスを取得する
             String filePath = SqliteTest.class.getClassLoader().getResource("test.db").getPath();
 
             // データベースに接続する なければ作成される
-            con = DriverManager.getConnection("jdbc:sqlite:" + filePath);
+            SQLiteDataSource ds = new SQLiteDataSource();
+            ds.setUrl("jdbc:sqlite:" + filePath);
+            con = ds.getConnection();
 
-        } catch (ClassNotFoundException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
         } catch (SQLException e) {
             // TODO 自動生成された catch ブロック
             // Connection の例外が発生した時
