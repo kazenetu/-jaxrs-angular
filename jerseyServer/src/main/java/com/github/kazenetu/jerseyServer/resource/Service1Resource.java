@@ -3,6 +3,7 @@ package com.github.kazenetu.jerseyServer.resource;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
@@ -114,14 +115,15 @@ public class Service1Resource {
     public String Login(@QueryParam("id") String id) {
 
         //TODO パスワードを取得
-        UserData userData = userService.login(id, "");
-        if (userData != null) {
-            session.setAttribute("userId", id);
-            String result = String.format("{\"result\":\"OK\",\"name\":\"%s\"}", userData.getName());
-            return result;
-        }
+        Optional<UserData> userData = userService.login(id, "");
 
-        return "{\"result\":\"NG\"}";
+        return userData.map(data->{
+            // セッションにログインIDを設定
+            session.setAttribute("userId", id);
+            return String.format("{\"result\":\"OK\",\"name\":\"%s\"}", data.getName());
+        }).orElse("{\"result\":\"NG\"}");
+
+
     }
 
     @POST

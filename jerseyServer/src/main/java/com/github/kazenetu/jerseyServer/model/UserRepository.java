@@ -3,6 +3,7 @@ package com.github.kazenetu.jerseyServer.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -33,7 +34,7 @@ public class UserRepository implements AutoCloseable {
      * @param password パスワード
      * @return ユーザー情報(検索できない場合はnull)
      */
-    public UserData login(String userID, String password) {
+    public Optional<UserData> login(String userID, String password) {
         String sql = "select NAME,AGE from MT_USER where USER_ID=?;";
 
         ArrayList<Object> params = new ArrayList<>();
@@ -42,23 +43,20 @@ public class UserRepository implements AutoCloseable {
         UserData userData = null;
         try {
             List<Map<String,Object>> result = db.query(sql, params);
-            if (result.isEmpty()) {
-                return userData;
+            if (!result.isEmpty()) {
+                Map<String,Object> row = result.get(0);
+
+                userData = new UserData();
+                userData.setName(userID);
+                userData.setName((String)row.get("NAME"));
+                userData.setAge((int)row.get("AGE"));
             }
-
-            Map<String,Object> row = result.get(0);
-
-            userData = new UserData();
-            userData.setName(userID);
-            userData.setName((String)row.get("NAME"));
-            userData.setAge((int)row.get("AGE"));
-
-            return userData;
         } catch (Exception e) {
             // TODO 自動生成された catch ブロック
             e.printStackTrace();
         }
-        return userData;
+
+        return Optional.ofNullable(userData);
     }
 
     /**

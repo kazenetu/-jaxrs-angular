@@ -1,5 +1,7 @@
 package com.github.kazenetu.jerseyServer.service;
 
+import java.util.Optional;
+
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
@@ -26,7 +28,7 @@ public class UserService {
      * @param password パスワード
      * @return ログイン成否
      */
-    public UserData login(String userID, String password) {
+    public Optional<UserData> login(String userID, String password) {
         try(UserRepository userRepository=new UserRepository()){
             return userRepository.login(userID, password);
         }
