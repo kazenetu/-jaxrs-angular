@@ -129,7 +129,7 @@ public class Service1Resource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String passwordChange(UserData userData) {
-        if(session.getAttribute("userId") == null || (String)session.getAttribute("userId") != userData.getId()){
+        if(session.getAttribute("userId") == null || !((String)session.getAttribute("userId")).equals(userData.getId())){
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
 
