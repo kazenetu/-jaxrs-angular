@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.sqlite.SQLiteDataSource;
 
@@ -152,79 +150,5 @@ public class SqliteTest implements AutoCloseable {
             throw new Exception(e);
         }
         return resultList;
-    }
-
-    public boolean Login(String id) {
-        String sql = "select count(USER_ID) as cnt from MT_USER where USER_ID=?;";
-
-        PreparedStatement statement;
-        try {
-            statement = con.prepareStatement(sql);
-
-            statement.setString(1, id);
-            ResultSet result = statement.executeQuery();
-
-            if (result.getInt("cnt") > 0) {
-                return true;
-            }
-        } catch (SQLException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-        }
-
-        //プロパティ取得テスト
-        getPropertiesTest();
-
-        return false;
-    }
-
-    public boolean updateTest(String id) {
-        String sql = "update MT_USER set PASSWORD=PASSWORD+1 where USER_ID=?;";
-
-        PreparedStatement statement;
-        try {
-            con.setAutoCommit(false);
-            con.setSavepoint();
-
-            statement = con.prepareStatement(sql);
-            statement.setString(1, id);
-
-            int result = statement.executeUpdate();
-            if (result > 0) {
-                con.commit();
-                return true;
-            } else {
-                con.rollback();
-                return false;
-            }
-        } catch (SQLException e) {
-            // TODO 自動生成された catch ブロック
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    /**
-     * プロパティファイル取得テスト
-     */
-    private void getPropertiesTest() {
-        ResourceBundle bundle = null;
-        try {
-            bundle = ResourceBundle.getBundle("connection_main");
-        } catch (MissingResourceException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        try {
-            System.out.println(bundle.getString("url"));
-            System.out.println(bundle.getString("driver"));
-            System.out.println(bundle.getString("user"));
-            System.out.println(bundle.getString("password"));
-        } catch (MissingResourceException e) {
-            e.printStackTrace();
-            return;
-        }
     }
 }
