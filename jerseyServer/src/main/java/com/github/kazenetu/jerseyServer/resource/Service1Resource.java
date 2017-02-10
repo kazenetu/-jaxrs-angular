@@ -9,6 +9,7 @@ import javax.annotation.PreDestroy;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -112,18 +113,36 @@ public class Service1Resource {
     @GET
     @Path("Login")
     @Produces(MediaType.APPLICATION_JSON)
-    public String Login(@QueryParam("id") String id) {
+    public String Login(@Context final HttpServletRequest servletRequest,@QueryParam("id") String id) {
+
+        //すでにログイン済みの場合はSessionIDの破棄と生成を行う
+        if(session.getAttribute("userId") != null){
+            refreshSessionId(servletRequest);
+        }
 
         //TODO パスワードを取得
         Optional<UserData> userData = userService.login(id, "");
 
         return userData.map(data->{
+            //SessionIDの破棄と生成を行う
+            refreshSessionId(servletRequest);
+
             // セッションにログインIDを設定
             session.setAttribute("userId", id);
             return String.format("{\"result\":\"OK\",\"name\":\"%s\"}", data.getName());
         }).orElse("{\"result\":\"NG\"}");
+    }
 
+    /**
+     * セッションの破棄と生成
+     * @param servletRequest 生成の際に利用するHttpServletRequest
+     */
+    private void refreshSessionId(final HttpServletRequest servletRequest){
+        //セッションの破棄
+        session.invalidate();
 
+        //セッション作成
+        session = servletRequest.getSession(true);
     }
 
     @POST
