@@ -89,4 +89,28 @@ public class UserRepository implements AutoCloseable {
 
         return false;
     }
+
+    /**
+     * ユーザー全レコードを取得する
+     * @return ユーザー全レコードのリスト
+     */
+    public List<UserData> getUsers(){
+        String sql = "select NAME,AGE from MT_USER;";
+
+        List<UserData> users = new ArrayList<>();
+
+        try {
+            List<Map<String,Object>> result = db.query(sql, new ArrayList<>());
+            if (!result.isEmpty()) {
+                result.forEach(row->{
+                    users.add(new UserData("",(String)row.get("NAME"),"",(int)row.get("AGE")));
+                });
+            }
+        } catch (Exception e) {
+            // TODO 自動生成された catch ブロック
+            e.printStackTrace();
+        }
+
+        return users;
+    }
 }

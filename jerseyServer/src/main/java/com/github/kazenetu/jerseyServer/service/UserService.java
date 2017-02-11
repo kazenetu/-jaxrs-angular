@@ -1,5 +1,6 @@
 package com.github.kazenetu.jerseyServer.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
@@ -44,6 +45,16 @@ public class UserService {
     public boolean passwordChange(String userID, String password, String newPassword) {
         try(UserRepository userRepository=new UserRepository()){
             return userRepository.passwordChange(userID, password, newPassword);
+        }
+    }
+
+    /**
+     * ユーザー全レコードを取得する
+     * @return ユーザー全レコードのリスト
+     */
+    public List<UserData> getUsers(){
+        try(UserRepository userRepository=new UserRepository()){
+            return userRepository.getUsers();
         }
     }
 

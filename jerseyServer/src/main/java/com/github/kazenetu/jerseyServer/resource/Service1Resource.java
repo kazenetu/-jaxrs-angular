@@ -1,7 +1,6 @@
 package com.github.kazenetu.jerseyServer.resource;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,16 +54,17 @@ public class Service1Resource {
     @GET
     @Path("TestData")
     @Produces(MediaType.APPLICATION_JSON)
-    public String SendData() {
-        List<TestData> list = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            list.add(new TestData("Name" + i, 20 + i));
-        }
+    public String SendData(@QueryParam("id") String id) {
+        //認証チェック（認証エラー時は401例外を出す）
+        authCheck(id);
+
+        //TODO パスワードを取得
+        List<UserData> users = userService.getUsers();
 
         String json = "";
         ObjectMapper mapper = new ObjectMapper();
         try {
-            json = mapper.writeValueAsString(list);
+            json = mapper.writeValueAsString(users);
         } catch (JsonProcessingException e) {
             // TODO 自動生成された catch ブロック
             e.printStackTrace();
@@ -133,6 +133,22 @@ public class Service1Resource {
         }).orElse("{\"result\":\"NG\"}");
     }
 
+    @POST
+    @Path("updateTest")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public String passwordChange(UserData userData) {
+        //認証チェック（認証エラー時は401例外を出す）
+        authCheck(userData.getId());
+
+        //TODO パスワードを取得
+        if (userService.passwordChange(userData.getId(),userData.getPassword(),"")) {
+            return "{\"result\":\"OK\"}";
+        }
+
+        return "{\"result\":\"NG\"}";
+    }
+
     /**
      * セッションの破棄と生成
      * @param servletRequest 生成の際に利用するHttpServletRequest
@@ -145,20 +161,15 @@ public class Service1Resource {
         session = servletRequest.getSession(true);
     }
 
-    @POST
-    @Path("updateTest")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public String passwordChange(UserData userData) {
-        if(session.getAttribute("userId") == null || !((String)session.getAttribute("userId")).equals(userData.getId())){
+    /**
+     * 認証確認
+     * @param userId ログインしているユーザー
+     */
+    private void authCheck(String userId){
+        if(session.getAttribute("userId") == null || !((String)session.getAttribute("userId")).equals(userId)){
+            //認証エラー時は401例外を出す
             throw new WebApplicationException(Status.UNAUTHORIZED);
         }
-
-        //TODO パスワードを取得
-        if (userService.passwordChange(userData.getId(),userData.getPassword(),"")) {
-            return "{\"result\":\"OK\"}";
-        }
-
-        return "{\"result\":\"NG\"}";
     }
+
 }

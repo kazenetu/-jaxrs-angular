@@ -1,6 +1,19 @@
 var myApp = angular.module('userService', []);
 myApp.service('userService', function() {
+  this.id = "";
   this.name = "";
+
+  this.setId = function(id){
+    this.id = id;
+    sessionStorage.setItem("userId",this.id);
+  };
+
+  this.getId = function(){
+    if(this.id === ""){
+      this.id = sessionStorage.getItem("userId");
+    }
+    return this.id;
+  };
 
   this.setName = function(name){
     this.name = name;
@@ -8,7 +21,6 @@ myApp.service('userService', function() {
   };
 
   this.getName = function(){
-
     if(this.name === ""){
       this.name = sessionStorage.getItem("userName");
     }
