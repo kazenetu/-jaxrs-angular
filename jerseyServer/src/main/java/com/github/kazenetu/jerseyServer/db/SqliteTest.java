@@ -12,7 +12,7 @@ import java.util.Map;
 
 import org.sqlite.SQLiteDataSource;
 
-public class SqliteTest implements AutoCloseable {
+public class SqliteTest implements Database {
 
     private Connection con = null;
     private boolean isSetTransaction = false;

@@ -8,13 +8,14 @@ import java.util.Optional;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 
+import com.github.kazenetu.jerseyServer.db.Database;
 import com.github.kazenetu.jerseyServer.db.SqliteTest;
 import com.github.kazenetu.jerseyServer.entity.UserData;
 
 @Named
 @RequestScoped
 public class UserRepository implements AutoCloseable {
-    private SqliteTest db;
+    private Database db;
 
     public UserRepository(){
         System.out.println("UserRepository PostConstruct:"+hashCode());
