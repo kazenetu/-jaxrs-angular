@@ -16,7 +16,7 @@ import com.github.kazenetu.jerseyServer.entity.TestData;
 
 //以下でアクセス http://localhost:8080/jerseyServer/app/dl/download
 @Path("dl")
-public class DownloadResource {
+public class DownloadResource extends Resource {
     @POST
     @Path("download")
     @Produces(MediaType.TEXT_PLAIN)

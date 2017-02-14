@@ -9,17 +9,14 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -34,13 +31,10 @@ import com.github.kazenetu.jerseyServer.service.UserService;
 //以下でアクセス http://localhost:8080/jerseyServer/app/Service1
 @RequestScoped
 @Path("Service1")
-public class Service1Resource {
+public class Service1Resource extends Resource {
 
     @Inject
     UserService userService;
-
-    @Inject
-    HttpSession session;
 
     @Context
     public void setServletContext(ServletContext context) {
@@ -147,29 +141,6 @@ public class Service1Resource {
         }
 
         return "{\"result\":\"NG\"}";
-    }
-
-    /**
-     * セッションの破棄と生成
-     * @param servletRequest 生成の際に利用するHttpServletRequest
-     */
-    private void refreshSessionId(final HttpServletRequest servletRequest){
-        //セッションの破棄
-        session.invalidate();
-
-        //セッション作成
-        session = servletRequest.getSession(true);
-    }
-
-    /**
-     * 認証確認
-     * @param userId ログインしているユーザー
-     */
-    private void authCheck(String userId){
-        if(session.getAttribute("userId") == null || !((String)session.getAttribute("userId")).equals(userId)){
-            //認証エラー時は401例外を出す
-            throw new WebApplicationException(Status.UNAUTHORIZED);
-        }
     }
 
 }
