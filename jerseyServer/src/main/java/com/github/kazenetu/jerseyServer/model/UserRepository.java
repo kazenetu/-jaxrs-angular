@@ -15,7 +15,6 @@ import com.github.kazenetu.jerseyServer.entity.UserData;
 public class UserRepository extends Repository {
 
     public UserRepository(){
-        System.out.println("UserRepository UserRepository:"+hashCode());
     }
 
     /**

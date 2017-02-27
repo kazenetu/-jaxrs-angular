@@ -42,7 +42,6 @@ public class Service1Resource extends Resource {
 
     @PreDestroy
     public void PreDestroy(){
-        System.out.println(">req PreDestroy");
     }
 
     @GET

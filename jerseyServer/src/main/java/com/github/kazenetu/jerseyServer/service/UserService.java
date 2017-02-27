@@ -15,12 +15,10 @@ public class UserService {
 
     @PostConstruct
     public void PostConstruct(){
-        System.out.println("UserService PostConstruct:"+hashCode());
     }
 
     @PreDestroy
     public void PreDestroy(){
-        System.out.println("UserService PreDestroy");
     }
 
     /**

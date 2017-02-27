@@ -18,8 +18,6 @@ public class SqliteTest implements Database {
     private boolean isSetTransaction = false;
 
     public SqliteTest() {
-        System.out.println("SqliteTest new:"+hashCode());
-
         try {
             //クラスローダーからdbファイルの物理パスを取得する
             String filePath = SqliteTest.class.getClassLoader().getResource("test.db").getPath();
@@ -39,8 +37,6 @@ public class SqliteTest implements Database {
 
     @Override
     public void close() {
-        System.out.println("close");
-
         if (con != null) {
             try {
                 if (isSetTransaction) {

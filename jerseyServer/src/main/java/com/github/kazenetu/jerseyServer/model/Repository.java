@@ -25,7 +25,6 @@ public class Repository implements AutoCloseable {
      * コンストラクタ
      */
     public Repository() {
-        System.out.println("Repository Repository:"+hashCode());
 
         // dbの種類を設定
         String dbName = System.getenv("DBNAME");
@@ -45,7 +44,6 @@ public class Repository implements AutoCloseable {
      */
     @Override
     public void close() {
-        System.out.println("Repository close");
         db.close();
         db = null;
     }
